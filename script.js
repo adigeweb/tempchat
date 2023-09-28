@@ -68,7 +68,7 @@ document.querySelector("#create").addEventListener("click", () => {
                     onValue(ref(db, `Rooms/${res.value[0]}/Messages`), (snapshot) => {
                         document.querySelector(".chatroom .messages").innerHTML = "";
                         Object.keys(snapshot.val()).forEach(item => {
-                            document.querySelector(".chatroom .messages").innerHTML += `
+                            document.querySelector(".chatroom .messages").innerHTML = document.querySelector(".chatroom .messages").innerHTML + `
                                 <div class="message ${snapshot.val()[item].startsWith(displayName + ":") ? "me" : "other"}">${snapshot.val()[item]}</div>
                             `;
                         });
@@ -150,7 +150,7 @@ document.querySelector("#join").addEventListener("click", () => {
                                 onValue(ref(db, `Rooms/${res.value[0]}/Messages`), (snapshot) => {
                                     document.querySelector(".chatroom .messages").innerHTML = "";
                                     Object.keys(snapshot.val()).forEach(item => {
-                                        document.querySelector(".chatroom .messages").innerHTML += `
+                                        document.querySelector(".chatroom .messages").innerHTML = document.querySelector(".chatroom .messages").innerHTML + `
                                             <div class="message ${snapshot.val()[item].startsWith(displayName + ":") ? "me" : "other"}">${snapshot.val()[item]}</div>
                                         `;
                                     });
@@ -179,4 +179,9 @@ document.querySelector(".chatroom .send").addEventListener("click", () => {
     var postData = {};
     postData[Math.floor(Math.random() * 1000)] = displayName + ": " + document.querySelector("input.type").value;
     update(ref(db, `Rooms/${roomName}/Messages`), postData);
+    document.querySelector("input.type").value = "";
+});
+
+document.body.addEventListener("keydown", (event) => {
+    if (event.keyCode === 13) document.querySelector(".chatroom .send").click();
 });
